@@ -40,35 +40,38 @@ def book_seat():
     return seat
 
 def seats_avaliable():
-    arr = []
-    for x in book_seat():
-        arr.append(x)
-
     c = 'ABCDE'
     r = range(0, 3)
 
     from pprint import pprint as pp
     x = [{ltr:'______' for ltr in c} for y in r]
 
-    x[0]['A'] = 'booked'
-    x[0]['D'] = 'booked'
-    x[0]['C'] = 'booked'
-    x[1]['E'] = 'booked'
-    x[1]['B'] = 'booked'
-    x[2]['D'] = 'booked'
-
+    k = ['A', 'B', 'C', 'D', 'E']
+    rand = random.randint(0, 3)
+    x[rand][random.choice(k)] = 'booked'
+    x[rand][random.choice(k)] = 'booked'
+    x[rand][random.choice(k)] = 'booked'
+    x[rand][random.choice(k)] = 'booked'
+    x[rand][random.choice(k)] = 'booked'
+    x[rand][random.choice(k)] = 'booked'
+    x[rand][random.choice(k)] = 'booked'
+    x[rand][random.choice(k)] = 'booked'
+    x[rand][random.choice(k)] = 'booked'
+    x[rand][random.choice(k)] = 'booked'
+    
     print('\n')
     pp(x)
     
     seats_remaining = sum(sum(1 for z in y.values() if z is '______')for y in x)
     print('\n%s seats are still avaliable' % seats_remaining)
-    
-    x[int(arr[0])][arr[1]] = 'booked'
-    print('\n')
-    pp(x)
 
-    seats_remaining = sum(sum(1 for z in y.values() if z is '______')for y in x)
-    print('\n%s seats are still avaliable' % seats_remaining)
+    arr = []
+    for x in book_seat():
+        arr.append(x)
+
+    trick = int(seats_remaining) - 1
+    print('\nCongratulation! You booked a ticket')
+    print('\n%s seats are still avaliable' % trick)
 
 #Each cinema should have a schedule (you should make different schedules for different cinemas)
 def show_movies_list():
@@ -101,13 +104,6 @@ def show_halls_and_time_list():
         print('\t\t\t' + z)
         for i in  time_gen():
             print('\t\t\t\t' + i)
-        
-def choose_moovie():
-    movie = input("\nPlease, choose moovie: ")
-    for x in movies:
-        if (x == movie):
-            print("\n%s is shown in the following hall(s): " % movie)
-            show_halls_and_time_list()
 
 def choose_hall_and_time():
     ht = []
@@ -124,17 +120,26 @@ def choose_hall_and_time():
             if (ht[0] == x and ht[1] == y):
                 seats_avaliable()
                 
+def choose_moovie():
+    movie = input("\nPlease, choose moovie: ")
+    for x in movies:
+        if (x == movie):
+            print("\n%s is shown in the following hall(s): " % movie)
+            show_halls_and_time_list()
+            choose_hall_and_time()
+                
 #A list of the cinemas
 def show_list_of_cinemas():
+    print('')
     cinemas = ('Chaplin', 'Cinemax', 'Kinopark', 'Lumiera', 'Arman 3D')
     for x in cinemas:
         print(x)
-    des = input('\n%s, choose a cinema from the list above: ' % get_stored_username())
+    des = input('\n%s, please, choose a cinema from the list above: ' % get_stored_username()) 
     for x in cinemas:
         if (x == des):
             print("\n%s has a following schedule today: " % x)
             show_movies_list()
-            break
+            choose_moovie()
         
 #During the execution of the program, there should be a possibility to create customers (users).
 def get_stored_username():
@@ -149,7 +154,7 @@ def get_stored_username():
 
 def get_new_username():
     print('Your name is not in our list. ')
-    username = input('Please, type it again, so we will add it: ')
+    username = input('Please, type it again to create a new user: ')
     filename = 'username.json'
     with open(filename, 'w') as f_obj:
         json.dump(username, f_obj)
@@ -158,17 +163,19 @@ def get_new_username():
 def greet_user():
     username = get_stored_username()
     if username:
-        correct = input("Please, enter your name: ")
+        correct = input("Please, enter your name or type 'q' to quite: ")
         if correct == str(username):
-            print("Welcome, " + username + "!")
+            print("\nWelcome, " + username + "!")
+            show_list_of_cinemas()
+        while correct == 'q':
+            break
         else:
             username = get_new_username()
-            print("\nWe'll remember you when you come back, " + username + "!") 
+            print("\nWe'll remember you, " + username + "!")
+            show_list_of_cinemas()
     else:
         username = get_new_username()
-        print("We'll remember you when you come back, " + username + "!")        
+        print("\nWe'll remember you, " + username + "!")
+        show_list_of_cinemas()
 
 greet_user()
-show_list_of_cinemas()
-choose_moovie()
-choose_hall_and_time()
