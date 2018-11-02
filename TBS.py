@@ -28,7 +28,6 @@ time = ['10:10', '10:20', '11:00', '11:10', '12:00', '12:20',
 #Each cinema should have more than one hall (кинозал).
 halls = ['green', 'blue', 'red', 'orange']
 
-
 #Each hall should have seats number (make this number small 3-5, for the simplicity)
 #Once the ticket is booked, the information about the available seats should be updated.
 #When you run the program, the random number of seats should be sold (occupied) right from the beginning.
@@ -109,8 +108,12 @@ def choose_hall_and_time():
     ht = []
     arr = []
     choose_hall = input('\nNow, please choose hall: ')
+    if not bool(choose_hall.rstrip()):
+        choose_hall = input('\nNow, please choose hall: ')
     ht.append(choose_hall)
     choose_time = input('and time: ')
+    if not bool(choose_time.rstrip()):
+        choose_time = input('and time: ')
     ht.append(choose_time)
     
     for x in hall_gen():
@@ -122,8 +125,10 @@ def choose_hall_and_time():
                 
 def choose_moovie():
     movie = input("\nPlease, choose moovie: ")
+    if not bool(movie.rstrip()):
+        movie = input("\nPlease, choose moovie: ")
     for x in movies:
-        if (x == movie):
+        if (x.lower() == movie.lower()):
             print("\n%s is shown in the following hall(s): " % movie)
             show_halls_and_time_list()
             choose_hall_and_time()
@@ -135,11 +140,16 @@ def show_list_of_cinemas():
     for x in cinemas:
         print(x)
     des = input('\n%s, please, choose a cinema from the list above: ' % get_stored_username()) 
+    if not bool(des.rstrip()):
+        des = input('\n%s, please, choose a cinema from the list above: ' % get_stored_username()) 
     for x in cinemas:
-        if (x == des):
+        if (x.lower() == des.lower()):
             print("\n%s has a following schedule today: " % x)
             show_movies_list()
             choose_moovie()
+        else:
+            print("\nYou made a spelling mistake.")
+            show_list_of_cinemas()
         
 #During the execution of the program, there should be a possibility to create customers (users).
 def get_stored_username():
