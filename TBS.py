@@ -143,7 +143,7 @@ def show_list_of_cinemas():
     if not bool(des.rstrip()):
         des = input('\n%s, please, choose a cinema from the list above: ' % get_stored_username()) 
     for x in cinemas:
-        if (des.lower() == x.lower() == True):
+        if (des.lower() == x.lower()):
             print("\n%s has a following schedule today: " % x)
             show_movies_list()
             choose_moovie()
